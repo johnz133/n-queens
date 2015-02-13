@@ -15,11 +15,7 @@
 // with n rooks placed such that none of them can attack each other
 
 window.findNRooksSolution = function(n) {
-  //var theBoard = board.rows();
-  //var solution = undefined; //fixme
-
   var theBoard = new Board({n:n});
-
   var inner = function(row){
     //termination condtion:
       //when youre off the board
@@ -38,7 +34,6 @@ window.findNRooksSolution = function(n) {
       theBoard.togglePiece(row, i);
     }
   };
-
   var solution = inner(0);
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
@@ -55,43 +50,29 @@ window.countNRooksSolutions = function(n) {
     //termination condtion:
       //when youre off the board
     if(row >= n){
-
-      //holder.push(theBoard.rows().slice());
       solutionCount++;
-      return;
-      // return theBoard.rows();
-    }
-    //iterate row
-    for (var i = 0; i < n; i++) {
-      //toggle 0 and 1 for each index
-      theBoard.togglePiece(row, i);
-      //get down to the next row
-      //recurse over this row, (check if there are any conflict)
-      if(!theBoard.hasAnyRooksConflicts()){
-        inner(row + 1);
+    } else {
+      for (var i = 0; i < n; i++) {
+        //toggle 0 and 1 for each index
+        theBoard.togglePiece(row, i);
+        //get down to the next row
+        //recurse over this row, (check if there are any conflict)
+        if(!theBoard.hasAnyRooksConflicts()){
+          inner(row + 1);
+        }
+        theBoard.togglePiece(row, i);
       }
-      theBoard.togglePiece(row, i);
-
     }
   };
-
-  // var solution = inner(0);
-  // console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  //return solution;
-
   inner(0);
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;//(solutionCount * n - solutionCount)/(n * n);
+  return solutionCount;
 };
 
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
 window.findNQueensSolution = function(n) {
-  //var solution = undefined; //fixme
-  // if(n === 2 || n === 3 ){
-  //   return {n:n};
-  // }
   var theBoard = new Board({n:n});
   var solution = undefined;
   var inner = function(row){
@@ -103,7 +84,6 @@ window.findNQueensSolution = function(n) {
     if(row >= n){
       var temp = [];
       for (var i = 0; i < n; i++) {
-        console.log(theBoard.get(i).slice());
         temp.push(theBoard.get(i).slice());
       }
       solution = temp;
@@ -111,8 +91,6 @@ window.findNQueensSolution = function(n) {
     }
     //iterate row
     for (var i = 0; i < n; i++) {
-      //toggle 0 and 1 for each index
-      //console.log(row + " " + i + " " +n);
       theBoard.togglePiece(row, i);
       //get down to the next row
       //recurse over this row, (check if there are any conflict)
@@ -123,8 +101,6 @@ window.findNQueensSolution = function(n) {
 
     }
   };
-
-  //var solution = inner(0);
   inner(0);
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution ? solution : { n:n };
@@ -133,21 +109,14 @@ window.findNQueensSolution = function(n) {
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
 window.countNQueensSolutions = function(n) {
-
-  // if(n===2 || n===3){
-  //   return 0;
-  // }
   var theBoard = new Board({n:n});
   var solutionCount = 0;
   var inner = function(row){
     //termination condtion:
       //when youre off the board
     if(row >= n){
-      // debugger;
-      //holder.push(theBoard.rows().slice());
       solutionCount++;
       return;
-      // return theBoard.rows();
     }
     //iterate row
     for (var i = 0; i < n; i++) {
@@ -161,11 +130,6 @@ window.countNQueensSolutions = function(n) {
       theBoard.togglePiece(row, i);
     }
   };
-
-  // var solution = inner(0);
-  // console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
-  //return solution;
-
   inner(0);
   console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   return solutionCount;
