@@ -77,6 +77,8 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
+    // 
+    
     hasRowConflictAt: function(rowIndex) {
 
       // get the row with helper function
