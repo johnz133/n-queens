@@ -188,7 +188,7 @@
       //convert parameter to starting position
       if(minorDiagonalColumnIndexAtFirstRow >= theBoard.length){
         var remainder = minorDiagonalColumnIndexAtFirstRow % theBoard.length;
-        var start = [1 + remainder, theBoard.length];
+        var start = [1 + remainder, theBoard.length - 1];
       } else {
         var temp = theBoard.length - minorDiagonalColumnIndexAtFirstRow - 1;
         start = [0, temp];
