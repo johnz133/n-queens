@@ -77,28 +77,35 @@
     // --------------------------------------------------------------
     //
     // test if a specific row on this board contains a conflict
-    // 
-    
+    //
+
     hasRowConflictAt: function(rowIndex) {
 
       // get the row with helper function
       var row = this.get(rowIndex);
       //console.log("row is ", row);
       // filter the row for ones and check length
-      var count = row.filter(function(elem){
-        return elem === 1;
-      }).length;
+
+      var alreadyOccupied = false;
+
+      for (var i = 0; i < this.get('n'); i++) {
+        if(row[i]){
+          if (alreadyOccupied) {
+            return true;
+          }
+          alreadyOccupied = true;
+        }
+      }
 
         // if length greater than one
-      return count > 1;
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
       //get the board
-      var theBoard = this.rows();
       //iterate over the board
-      for(var i = 0; i < theBoard.length; i++){
+      for(var i = 0; i < this.get('n'); i++){
         if( this.hasRowConflictAt(i) ){
           return true;
         }
@@ -115,23 +122,23 @@
     hasColConflictAt: function(colIndex) {
       //gets the matrix
       var theBoard = this.rows();
-      var holder = [];
-      //iterate over the matrix and push the elem in the column index into the holder
-      for(var i = 0; i < theBoard.length; i++){
-        var square = theBoard[i][colIndex];
-        holder.push(square);
-      }
-      var count = holder.filter(function(elem){
-        return elem === 1;
-      }).length;
 
-      return count > 1;
+      var alreadyOccupied = false;
+      for (var i = 0; i < this.get('n'); i++) {
+        if(theBoard[i][colIndex]){
+          if(alreadyOccupied){
+            return true;
+          }
+          alreadyOccupied = true;
+        }
+      }
+
+      return false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      var theBoard = this.rows();
-      for (var i = 0; i < theBoard.length; i++) {
+      for (var i = 0; i < this.get('n'); i++) {
         if(this.hasColConflictAt(i)){
           return true;
         }
@@ -139,38 +146,37 @@
       return false;
     },
 
-
-
     // Major Diagonals - go from top-left to bottom-right
     // --------------------------------------------------------------
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
       var theBoard = this.rows();
-      var holder = [];
+      // var holder = [];
       //convert parameter to starting position
-      if(majorDiagonalColumnIndexAtFirstRow >= theBoard.length){
-        var remainder = majorDiagonalColumnIndexAtFirstRow % theBoard.length;
+      if(majorDiagonalColumnIndexAtFirstRow >= this.get('n')){
+        var remainder = majorDiagonalColumnIndexAtFirstRow % this.get('n');
         var start = [0, 1 + remainder];
       } else {
-        var temp = theBoard.length - majorDiagonalColumnIndexAtFirstRow - 1;
+        var temp = this.get('n') - majorDiagonalColumnIndexAtFirstRow - 1;
         start = [temp, 0];
       }
+      var alreadyOccupied = false;
       //while still on board
-      while(start[0] < theBoard.length && start[1] < theBoard.length){
-        var value = theBoard[start[0]++][start[1]++];
-        holder.push(value);
+      while(start[0] < this.get('n') && start[1] < this.get('n')){
+        if(theBoard[start[0]++][start[1]++]){
+          if(alreadyOccupied){
+            return true;
+          }
+          alreadyOccupied = true;
+        }
       }
-      var count = holder.filter(function (elem) {
-        return elem === 1;
-      }).length;
-      return count > 1;
+      return false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      var theBoard = this.rows();
-      for (var i = 0; i < theBoard.length * 2 + 1; i++) {
+      for (var i = 0; i < this.get('n') * 2 + 1; i++) {
         if(this.hasMajorDiagonalConflictAt(i)){
           return true;
         }
@@ -186,30 +192,30 @@
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
       var theBoard = this.rows();
-      var holder = [];
+      var alreadyOccupied = false;
       //convert parameter to starting position
-      if(minorDiagonalColumnIndexAtFirstRow >= theBoard.length){
-        var remainder = minorDiagonalColumnIndexAtFirstRow % theBoard.length;
-        var start = [1 + remainder, theBoard.length - 1];
+      if(minorDiagonalColumnIndexAtFirstRow >= this.get('n')){
+        var remainder = minorDiagonalColumnIndexAtFirstRow % this.get('n');
+        var start = [1 + remainder, this.get('n') - 1];
       } else {
-        var temp = theBoard.length - minorDiagonalColumnIndexAtFirstRow - 1;
+        var temp = this.get('n') - minorDiagonalColumnIndexAtFirstRow - 1;
         start = [0, temp];
       }
       //while still on board
-      while(start[0] < theBoard.length && start[1] >= 0){
-        var value = theBoard[start[0]++][start[1]--];
-        holder.push(value);
+      while(start[0] < this.get('n') && start[1] >= 0){
+        if(theBoard[start[0]++][start[1]--]){
+          if(alreadyOccupied){
+            return true;
+          }
+          alreadyOccupied = true;
+        }
       }
-      var count = holder.filter(function (elem) {
-        return elem === 1;
-      }).length;
-      return count > 1;
+      return false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      var theBoard = this.rows();
-      for (var i = 0; i < theBoard.length * 2 + 1; i++) {
+      for (var i = 0; i < this.get('n') * 2 + 1; i++) {
         if(this.hasMinorDiagonalConflictAt(i)){
           return true;
         }
